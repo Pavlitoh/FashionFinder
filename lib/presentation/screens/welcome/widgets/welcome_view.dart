@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeView extends StatelessWidget {
   @override
@@ -20,101 +21,104 @@ class WelcomeView extends StatelessWidget {
           ),
         ),
         // Contenido principal
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Imagen destacada
-            Expanded(
-              flex: 2,
-              child: Center(
-                child: Image.network(
-                  'https://cdn-icons-png.flaticon.com/512/166/166282.png',
-                  width: 150,
-                  height: 150,
-                  fit: BoxFit.contain,
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // Imagen destacada
+              Image.network(
+                'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080',
+                width: 250,
+                height: 250,
+                fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return Center(
+                    child: CircularProgressIndicator(
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                              (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  );
+                },
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(Icons.broken_image, size: 100, color: Colors.white);
+                },
+              ),
+              const SizedBox(height: 20),
+              // Título principal
+              Text(
+                "FashionFinder",
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      color: Colors.black45,
+                      offset: Offset(2, 2),
+                      blurRadius: 5,
+                    ),
+                  ],
                 ),
               ),
-            ),
-            // Título principal
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    "FashionFinder",
-                    style: TextStyle(
-                      fontSize: 40,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          color: Colors.black45,
-                          offset: Offset(2, 2),
-                          blurRadius: 4,
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    "Descubre tu estilo, redefine tu armario",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white70,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 10),
+              Text(
+                "Descubre tu estilo, redefine tu armario",
+                style: GoogleFonts.montserrat(
+                  fontSize: 16,
+                  color: Colors.white70,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
-            ),
-            // Botones
-            Expanded(
-              child: Column(
-                children: [
-                  ElevatedButton(
-                    onPressed: () => context.go('/login'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.purple,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      "Iniciar Sesión",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () => context.go('/register'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purpleAccent,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 16,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      "Registrar Usuario",
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ],
+              const SizedBox(height: 30),
+              // Botones
+              _buildButton(
+                context,
+                text: "Iniciar Sesión",
+                onPressed: () => context.go('/login'),
+                backgroundColor: Colors.white,
+                textColor: Colors.purple,
               ),
-            ),
-            SizedBox(height: 30),
-          ],
+              const SizedBox(height: 16),
+              _buildButton(
+                context,
+                text: "Registrar Usuario",
+                onPressed: () => context.go('/register'),
+                backgroundColor: Colors.purpleAccent,
+                textColor: Colors.white,
+              ),
+            ],
+          ),
         ),
       ],
+    );
+  }
+
+  Widget _buildButton(
+    BuildContext context, {
+    required String text,
+    required VoidCallback onPressed,
+    required Color backgroundColor,
+    required Color textColor,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: textColor,
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+        shadowColor: Colors.black45,
+        elevation: 10,
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

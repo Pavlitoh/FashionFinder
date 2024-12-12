@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:go_router/go_router.dart'; // Asegúrate de importar esto si estás usando go_router.
+import 'package:go_router/go_router.dart';
 import 'package:proyectofinal/domain/providers/branch_provider.dart';
 
 class MapView extends StatefulWidget {
@@ -31,7 +31,6 @@ class _MapViewState extends State<MapView> {
 
     setState(() {
       _markers.clear();
-      // Filtrar los markers según el categoryId
       for (var branch in branchProvider.branches) {
         if (branch.categoryId == widget.categoryId) {
           _markers.add(
@@ -51,32 +50,54 @@ class _MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          GoogleMap(
-            onMapCreated: (controller) {
-              mapController = controller;
-            },
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(21.126724, -101.685444),
-              zoom: 13,
-            ),
-            markers: _markers,
-          ),
-          Positioned(
-            top: 16.0,
-            left: 16.0,
-            child: FloatingActionButton(
-              heroTag: "backButton", 
-              onPressed: () {
-                context.go('/');
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            GoogleMap(
+              onMapCreated: (controller) {
+                mapController = controller;
               },
-              backgroundColor: Colors.white,
-              child: const Icon(Icons.arrow_back, color: Colors.black),
+              initialCameraPosition: const CameraPosition(
+                target: LatLng(21.126724, -101.685444),
+                zoom: 13,
+              ),
+              markers: _markers,
             ),
-          ),
-        ],
+            Positioned(
+              top: 16.0,
+              left: 16.0,
+              child: GestureDetector(
+                onTap: () {
+                  context.go('/home'); // Regresar al Home
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 8.0,
+                        offset: Offset(2, 2),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(10.0),
+                  child: const Icon(Icons.arrow_back, color: Colors.black),
+                ),
+              ),
+            ),
+          ],
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.startFloat, // Mueve el botón a la izquierda
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            context.go('/shops', extra: widget.categoryId);
+          },
+          child: const Icon(Icons.list),
+          tooltip: "Ver Tiendas Filtradas",
+        ),
       ),
     );
   }

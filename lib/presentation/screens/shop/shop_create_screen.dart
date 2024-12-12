@@ -51,7 +51,16 @@ class _ShopCreateScreenState extends State<ShopCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Crear Tienda")),
+      appBar: AppBar(
+        title: const Text("Crear Tienda"),
+        backgroundColor: Colors.pinkAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/shops');
+          },
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -60,36 +69,63 @@ class _ShopCreateScreenState extends State<ShopCreateScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: "Nombre"),
+                decoration: const InputDecoration(
+                  labelText: "Nombre",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? "El nombre es requerido" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: "Descripción"),
+                decoration: const InputDecoration(
+                  labelText: "Descripción",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? "La descripción es requerida" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _categoryController,
-                decoration: InputDecoration(labelText: "ID de Categoría"),
+                decoration: const InputDecoration(
+                  labelText: "ID de Categoría",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? "El ID de categoría es requerido" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: "Dirección"),
+                decoration: const InputDecoration(
+                  labelText: "Dirección",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? "La dirección es requerida" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _phoneController,
-                decoration: InputDecoration(labelText: "Teléfono"),
+                decoration: const InputDecoration(
+                  labelText: "Teléfono",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) => value!.isEmpty ? "El teléfono es requerido" : null,
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _websiteController,
-                decoration: InputDecoration(labelText: "Sitio Web (Opcional)"),
+                decoration: const InputDecoration(
+                  labelText: "Sitio Web (Opcional)",
+                  border: OutlineInputBorder(),
+                ),
               ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _imageController,
-                decoration: InputDecoration(labelText: "Enlace de Imagen (Opcional)"),
+                decoration: const InputDecoration(
+                  labelText: "Enlace de Imagen (Opcional)",
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value!.isNotEmpty && !Uri.tryParse(value)!.isAbsolute) {
                     return "El enlace de la imagen no es válido";
@@ -97,10 +133,37 @@ class _ShopCreateScreenState extends State<ShopCreateScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _createStore,
-                child: Text("Crear Tienda"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.pinkAccent,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Crear Tienda",
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/shops');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purpleAccent,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: const Text(
+                  "Volver a la Lista de Tiendas",
+                  style: TextStyle(fontSize: 18),
+                ),
               ),
             ],
           ),

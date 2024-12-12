@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:go_router/go_router.dart';
 import 'package:proyectofinal/domain/datasources/producto_datasource.dart';
 import 'package:proyectofinal/entities/producto.dart';
@@ -29,7 +28,9 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
           description: _descriptionController.text.trim(),
           price: double.parse(_priceController.text.trim()),
           store_id: widget.storeId,
-          image: _imageController.text.trim().isNotEmpty ? _imageController.text.trim() : null,
+          image: _imageController.text.trim().isNotEmpty
+              ? _imageController.text.trim()
+              : null,
         ));
 
         // Redirigir explícitamente a la lista de productos
@@ -47,57 +48,122 @@ class _ProductFormScreenState extends State<ProductFormScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Crear Producto"),
+        backgroundColor: Colors.pinkAccent,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/productos/${widget.storeId}'); // Regresar a la lista de productos
+          },
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: "Nombre del Producto"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "El nombre es obligatorio";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: "Descripción"),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "La descripción es obligatoria";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _priceController,
-                decoration: const InputDecoration(labelText: "Precio"),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "El precio es obligatorio";
-                  }
-                  if (double.tryParse(value) == null) {
-                    return "Debe ser un número válido";
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _imageController,
-                decoration: const InputDecoration(labelText: "URL de la Imagen"),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _createProduct,
-                child: const Text("Crear Producto"),
-              ),
-            ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  "Registrar Producto",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.purpleAccent,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: "Nombre del Producto",
+                    prefixIcon: const Icon(Icons.shopping_bag),
+                    filled: true,
+                    fillColor: Colors.pinkAccent.withOpacity(0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "El nombre es obligatorio";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(
+                    labelText: "Descripción",
+                    prefixIcon: const Icon(Icons.description),
+                    filled: true,
+                    fillColor: Colors.pinkAccent.withOpacity(0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "La descripción es obligatoria";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _priceController,
+                  decoration: InputDecoration(
+                    labelText: "Precio",
+                    prefixIcon: const Icon(Icons.attach_money),
+                    filled: true,
+                    fillColor: Colors.pinkAccent.withOpacity(0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "El precio es obligatorio";
+                    }
+                    if (double.tryParse(value) == null) {
+                      return "Debe ser un número válido";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _imageController,
+                  decoration: InputDecoration(
+                    labelText: "URL de la Imagen",
+                    prefixIcon: const Icon(Icons.image),
+                    filled: true,
+                    fillColor: Colors.pinkAccent.withOpacity(0.1),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _createProduct,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.pinkAccent,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: const Text(
+                    "Crear Producto",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

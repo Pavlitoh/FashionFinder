@@ -27,8 +27,9 @@ class LoginScreen extends StatelessWidget {
               children: [
                 // Encabezado con ícono y texto
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       IconButton(
                         icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -40,6 +41,13 @@ class LoginScreen extends StatelessWidget {
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black26,
+                              offset: Offset(2, 2),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -48,7 +56,22 @@ class LoginScreen extends StatelessWidget {
                 Expanded(
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(),
-                    child: LoginForm(), // Formulario
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        children: [
+                          // Logo
+                          Image.network(
+                            'https://cdn-icons-png.flaticon.com/512/166/166282.png',
+                            height: 150,
+                            width: 150,
+                          ),
+                          SizedBox(height: 16),
+                          // Formulario
+                          LoginForm(),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],

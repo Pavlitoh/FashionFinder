@@ -60,11 +60,15 @@ final GoRouter router = GoRouter(
       },
     ),
 
-    // Shops
     GoRoute(
       path: '/shops',
-      builder: (context, state) => ShopListScreen(),
+      builder: (context, state) {
+        final categoryId = state.pathParameters['categoryId']; // Capturamos el parámetro opcional
+        return ShopListScreen(categoryId: categoryId);
+      },
     ),
+
+
     GoRoute(
       path: '/shop/details/:id',
       builder: (context, state) {

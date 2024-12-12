@@ -25,4 +25,8 @@ class StoreProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<Store> filterStoresByCategory(String categoryId) {
+    return stores.where((store) => store.categoryId == categoryId).toList();
+  }
 }

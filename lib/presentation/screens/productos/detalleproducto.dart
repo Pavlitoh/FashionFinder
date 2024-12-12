@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:proyectofinal/domain/datasources/producto_datasource.dart';
 import 'package:proyectofinal/entities/producto.dart';
-import 'package:proyectofinal/presentation/shared/fondo.dart'; // Asegúrate de importar GoRouter
+import 'package:proyectofinal/presentation/shared/fondo.dart';
 
 class DetalleProductoPage extends StatefulWidget {
   final String productId;
@@ -27,7 +27,11 @@ class _DetalleProductoPageState extends State<DetalleProductoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detalle del Producto"),
+        title: const Text(
+          "Detalle del Producto",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.pinkAccent,
       ),
       body: Fondo(
         child: FutureBuilder<Product>(
@@ -48,43 +52,85 @@ class _DetalleProductoPageState extends State<DetalleProductoPage> {
             }
 
             final product = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (product.image != null && product.image!.isNotEmpty)
-                    Image.network(
-                      product.image!,
-                      height: 200,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          height: 200,
-                          color: Colors.grey,
-                          child: const Center(child: Text("Error al cargar la imagen")),
-                        );
-                      },
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (product.image != null && product.image!.isNotEmpty)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: Image.network(
+                          product.image!,
+                          height: 250,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              height: 250,
+                              color: Colors.grey.shade300,
+                              child: const Center(child: Icon(Icons.broken_image, size: 80)),
+                            );
+                          },
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.purpleAccent,
+                      ),
                     ),
-                  const SizedBox(height: 16),
-                  Text(
-                    "Nombre: ${product.name}",
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Text("Descripción: ${product.description}"),
-                  const SizedBox(height: 16),
-                  Text("Precio: \$${product.price.toStringAsFixed(2)}"),
-                  const SizedBox(height: 16),
-                  Text("Tienda ID: ${product.store_id}"),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.go('/productos/${product.store_id}');
-                    },
-                    child: const Text("Volver a la Lista de Productos"),
-                  ),
-                ],
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Descripción:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      product.description,
+                      style: const TextStyle(fontSize: 16, color: Colors.black54),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      "Precio:",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      "\$${product.price.toStringAsFixed(2)}",
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
+                    ),
+                    const SizedBox(height: 16),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.go('/productos/${product.store_id}');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.pinkAccent,
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Volver a la Lista de Productos",
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
