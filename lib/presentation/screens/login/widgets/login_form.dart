@@ -25,7 +25,7 @@ Future<void> _handleLogin(BuildContext context) async {
       context.go('/home');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(userProvider.errorMessage ?? "Credenciales inválidas")),
+        SnackBar(content: Text("Correo o contraseña incorrectos")),
       );
     }
   } catch (e) {

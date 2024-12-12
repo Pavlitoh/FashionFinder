@@ -67,103 +67,134 @@ class _HomeViewState extends State<HomeView> {
             return const Center(child: Text("No hay categorías disponibles."));
           }
 
-          return Stack(
+          return Column(
             children: [
-              Swiper(
-                itemCount: provider.categories.length,
-                itemWidth: MediaQuery.of(context).size.width * 0.85,
-                itemHeight: MediaQuery.of(context).size.height * 0.55,
-                layout: SwiperLayout.STACK,
-                control: const SwiperControl(
-                  color: Colors.pinkAccent,
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                ),
-                pagination: SwiperPagination(
-                  margin: const EdgeInsets.only(bottom: 60),
-                  builder: DotSwiperPaginationBuilder(
-                    color: Colors.grey.shade400,
-                    activeColor: Colors.pinkAccent.shade200,
-                    size: 8.0,
-                    activeSize: 12.0,
-                  ),
-                ),
-                itemBuilder: (context, index) {
-                  final category = provider.categories[index];
-                  return GestureDetector(
-                    onTap: () {
-                      context.go('/categories/${category.id}/map');
-                    },
-                    child: Card(
-                      elevation: 8,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Column(
+                  children: const [
+                    Text(
+                      "Categorías",
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.purpleAccent,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          if (category.image != null)
-                            ClipRRect(
-                              borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
-                              child: Image.network(
-                                category.image!,
-                                height: 180,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(Icons.broken_image, size: 100),
-                              ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Explora nuestras categorías y encuentra tu estilo único",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black54,
+                        fontStyle: FontStyle.italic,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    Swiper(
+                      itemCount: provider.categories.length,
+                      itemWidth: MediaQuery.of(context).size.width * 0.85,
+                      itemHeight: MediaQuery.of(context).size.height * 0.50,
+                      layout: SwiperLayout.STACK,
+                      control: const SwiperControl(
+                        color: Colors.pinkAccent,
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                      pagination: SwiperPagination(
+                        margin: const EdgeInsets.only(bottom: 60),
+                        builder: DotSwiperPaginationBuilder(
+                          color: Colors.grey.shade400,
+                          activeColor: Colors.pinkAccent.shade200,
+                          size: 8.0,
+                          activeSize: 12.0,
+                        ),
+                      ),
+                      itemBuilder: (context, index) {
+                        final category = provider.categories[index];
+                        return GestureDetector(
+                          onTap: () {
+                            context.go('/categories/${category.id}/map');
+                          },
+                          child: Card(
+                            elevation: 8,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
                             ),
-                          Padding(
-                            padding: const EdgeInsets.all(12.0),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                Text(
-                                  category.name,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.purpleAccent,
+                                if (category.image != null)
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(16),
+                                    ),
+                                    child: Image.network(
+                                      category.image!,
+                                      height: 180,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          const Icon(Icons.broken_image, size: 100),
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  category.description,
-                                  style: const TextStyle(fontSize: 14),
-                                  maxLines: 3,
-                                  overflow: TextOverflow.ellipsis,
+                                Padding(
+                                  padding: const EdgeInsets.all(12.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        category.name,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.purpleAccent,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        category.description,
+                                        style: const TextStyle(fontSize: 14),
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ],
+                        );
+                      },
+                    ),
+                    Positioned(
+                      bottom: 1,
+                      left: MediaQuery.of(context).size.width * 0.25,
+                      right: MediaQuery.of(context).size.width * 0.25,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          context.go('/shops');
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.purpleAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        child: const Text(
+                          "Ver Todas las Tiendas",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
                       ),
                     ),
-                  );
-                },
-              ),
-              Positioned(
-                bottom: 1,
-                left: MediaQuery.of(context).size.width * 0.25,
-                right: MediaQuery.of(context).size.width * 0.25,
-                child: ElevatedButton(
-                  onPressed: () {
-                    context.go('/shops');
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purpleAccent,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text(
-                    "Ver Todas las Tiendas",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
+                  ],
                 ),
               ),
             ],
